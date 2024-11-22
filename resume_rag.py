@@ -9,7 +9,6 @@ import streamlit as st
 
 load_dotenv()
 api_key = os.getenv('GEMINI_API_KEY')
-resume_path = os.getenv('DOCUMENT_PATH')
 
 
 @st.cache_resource
@@ -41,8 +40,7 @@ def chunk_text(text, chunk_size=100):
     return chunks
 
 
-resume_path = './resume.pdf'
-resume_text = read_pdf(resume_path)
+resume_text = read_pdf(os.getenv('DOCUMENT_PATH'))
 chunks = chunk_text(resume_text)
 
 
@@ -61,7 +59,7 @@ for i, chunk in enumerate(chunks):
         collection.upsert(
             ids=[str(i)],
             documents=[chunk],
-            embeddings=[embedding_list]  # Ensure this is a list of lists
+            embeddings=[embedding_list]
         )
 
 
